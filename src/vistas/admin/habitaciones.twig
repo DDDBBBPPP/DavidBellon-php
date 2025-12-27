@@ -1,0 +1,57 @@
+{% extends "plantillas/plantilla_dentro.twig" %}
+
+{% block contenido %}
+    <h2 class="mb-3">Habitaciones</h2>
+
+    <a href="{{ ruta('admin.habitacion.nueva') }}" class="btn btn-primary mb-3">
+        Nueva habitación
+    </a>
+
+    {% if es_admin_super() %}
+        <div class="alert alert-warning">
+            Aviso: si eliminas una habitación, también se eliminarán sus reservas asociadas y no se podrán recuperar.
+        </div>
+    {% endif %}
+
+    <table class="table table-bordered table-striped text-center align-middle">
+        <thead class="table-dark">
+        <tr>
+            <th>Número</th>
+            <th>Piso</th>
+            <th>Capacidad</th>
+            <th>Precio</th>
+            <th>Tipo</th>
+            {% if es_admin_super() %}
+                <th>Acciones</th>
+            {% endif %}
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for h in habitaciones %}
+            <tr>
+                <td>{{ h.numero }}</td>
+                <td>{{ h.piso }}</td>
+                <td>{{ h.capacidad }}</td>
+                <td>{{ h.precio }}</td>
+                <td>{{ h.tipo }}</td>
+
+                {% if es_admin_super() %}
+                    <td class="text-end">
+                        <form method="post" action="/?modelo=habitacionAdmin&metodo=borrar" style="display:inline;">
+                            <input type="hidden" name="id" value="{{ h.id_habitacion }}">
+                            <button class="btn btn-danger btn-sm">Borrar</button>
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{% if es_admin_super() %}6{% else %}5{% endif %}">
+                    No hay habitaciones registradas
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

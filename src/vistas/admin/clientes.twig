@@ -1,0 +1,30 @@
+{% extends "plantillas/plantilla_dentro.twig" %}
+
+{% block contenido %}
+    <h2 class="mb-4">Clientes registrados</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle">
+        <thead class="table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for c in clientes %}
+            <tr>
+                <td>{{ c.nombre }} {{ c.apellidos }}</td>
+                <td>{{ c.email }}</td>
+                <td>{{ c.telefono ?? '—' }}</td>
+                <td>{{ c.direccion ?? '—' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No hay clientes registrados</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

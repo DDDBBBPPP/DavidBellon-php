@@ -1,0 +1,68 @@
+{% extends "plantillas/plantilla_fuera.twig" %}
+
+{% block title %}Acceso · Gestor Hotelero{% endblock %}
+
+{% block content %}
+    <div class="card shadow mx-auto mt-5" style="max-width: 420px;">
+        <div class="card-body">
+
+            <h2 class="text-center mb-1">🏨 Gestor Hotelero</h2>
+            <p class="text-center text-muted mb-4">
+                Accede con tu cuenta para gestionar tus reservas
+            </p>
+
+            {% if registrado() %}
+                <div class="alert alert-success">
+                    Registro completado correctamente. Ya puedes iniciar sesión.
+                </div>
+            {% endif %}
+
+            {% if error() %}
+                <div class="alert alert-danger">
+                    Email o contraseña incorrectos
+                </div>
+            {% endif %}
+
+            <form method="post" autocomplete="off">
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email"
+                           name="email"
+                           class="form-control"
+                           required
+                           autofocus
+                           autocomplete="off"
+                           autocapitalize="none"
+                           spellcheck="false"
+                           placeholder="tuemail@hotel.com">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password"
+                           name="password"
+                           class="form-control"
+                           required
+                           autocomplete="new-password"
+                           placeholder="••••••••">
+                </div>
+
+                <div class="d-grid">
+                    <button class="btn btn-primary">
+                        Entrar
+                    </button>
+                </div>
+            </form>
+
+            <hr>
+
+            <div class="text-center">
+                <a href="{{ ruta('registro') }}">
+                    ¿No tienes cuenta? Regístrate
+                </a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "plantillas/plantilla_dentro.twig" %}
+
+{% block title %}Mis reservas{% endblock %}
+
+{% block contenido %}
+    <h2>Mis reservas</h2>
+
+    <a href="{{ ruta('cliente.habitaciones') }}" class="btn btn-primary mb-3">
+        Nueva reserva
+    </a>
+
+    <table class="table table-striped text-center align-middle">
+        <thead>
+        <tr>
+            <th>Habitación</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for r in reservas %}
+            <tr>
+                <td>
+                    {{ r.habitacion_numero ?? r.id_habitacion }}
+                    {% if r.tipo_habitacion is not null %}
+                        <small class="text-muted">({{ r.tipo_habitacion }})</small>
+                    {% endif %}
+                </td>
+                <td>{{ r.fecha_entrada }}</td>
+                <td>{{ r.fecha_salida }}</td>
+                <td>{{ r.estado }}</td>
+                <td>
+                    {% if r.estado in ['solicitada','aceptada'] %}
+                        <a href="/cliente/reserva/cancelar?id={{ r.id_reserva }}"
+                           class="btn btn-danger btn-sm">
+                            Cancelar
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No tienes reservas</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

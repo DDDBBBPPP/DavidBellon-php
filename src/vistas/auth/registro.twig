@@ -1,0 +1,97 @@
+{% extends "plantillas/plantilla_fuera.twig" %}
+
+{% block title %}Registro · Gestor Hotelero{% endblock %}
+
+{% block content %}
+    <div class="card shadow mx-auto mt-5" style="max-width: 480px;">
+        <div class="card-body">
+
+            <h2 class="text-center mb-1">📝 Registro</h2>
+            <p class="text-center text-muted mb-4">
+                Crea tu cuenta como cliente
+            </p>
+
+            {% if error is defined %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="post" autocomplete="off">
+
+
+                <div class="mb-2">
+                    <label class="form-label">Nombre</label>
+                    <input type="text"
+                           class="form-control"
+                           name="nombre"
+                           required
+                           placeholder="Ej: David"
+                           autocomplete="off">
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Apellidos</label>
+                    <input type="text"
+                           class="form-control"
+                           name="apellidos"
+                           placeholder="Ej: Fernández Jiménez"
+                           autocomplete="off">
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Email</label>
+                    <input type="email"
+                           class="form-control"
+                           name="email"
+                           required
+                           placeholder="tuemail@dominio.com"
+                           autocomplete="off"
+                           autocapitalize="none"
+                           spellcheck="false">
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password"
+                           class="form-control"
+                           name="password"
+                           required
+                           placeholder="Mínimo 6 caracteres"
+                           autocomplete="new-password">
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Teléfono</label>
+                    <input type="text"
+                           class="form-control"
+                           name="telefono"
+                           placeholder="Opcional"
+                           autocomplete="off">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Dirección</label>
+                    <input type="text"
+                           class="form-control"
+                           name="direccion"
+                           placeholder="Opcional"
+                           autocomplete="off">
+                </div>
+
+                <div class="d-grid">
+                    <button class="btn btn-primary">
+                        Registrarme
+                    </button>
+                </div>
+            </form>
+
+            <hr>
+
+            <div class="text-center">
+                <a href="{{ ruta('login') }}">Volver al login</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

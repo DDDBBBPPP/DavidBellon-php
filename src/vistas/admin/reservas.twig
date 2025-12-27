@@ -1,0 +1,69 @@
+{% extends "plantillas/plantilla_dentro.twig" %}
+
+{% block contenido %}
+    <h2 class="mb-4">Gestión de reservas</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle">
+        <thead class="table-dark">
+        <tr>
+            <th>Cliente</th>
+            <th>Email</th>
+            <th>Habitación</th>
+            <th>Tipo</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Estado / Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for r in reservas %}
+            <tr>
+                <td>{{ r.cliente_nombre }}</td>
+                <td>{{ r.cliente_email }}</td>
+                <td>{{ r.habitacion_numero }}</td>
+                <td>{{ r.tipo_habitacion }}</td>
+                <td>{{ r.fecha_entrada|date("d/m/Y") }}</td>
+                <td>{{ r.fecha_salida|date("d/m/Y") }}</td>
+
+                <td>
+                    <span class="badge bg-secondary">{{ r.estado }}</span>
+
+                    {# Aceptar: solo si solicitada (cualquier admin) #}
+                    {% if r.estado == 'solicitada' %}
+                        <a href="{{ ruta('admin.reserva.aceptar') }}?id={{ r.id_reserva }}"
+                           class="btn btn-sm btn-success ms-2">
+                            Aceptar
+                        </a>
+                    {% endif %}
+
+                    {# Acciones solo superadmin #}
+                    {% if es_admin_super() %}
+
+                        {# Cancelar: SOLO si solicitada #}
+                        {% if r.estado == 'solicitada' %}
+                            <a href="{{ ruta('admin.reserva.cancelar') }}?id={{ r.id_reserva }}"
+                               class="btn btn-sm btn-danger ms-1">
+                                Cancelar
+                            </a>
+                        {% endif %}
+
+                        {# Finalizar: SOLO si aceptada #}
+                        {% if r.estado == 'aceptada' %}
+                            <a href="{{ ruta('admin.reserva.finalizar') }}?id={{ r.id_reserva }}"
+                               class="btn btn-sm btn-warning ms-1">
+                                Finalizar
+                            </a>
+                        {% endif %}
+
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">No hay reservas registradas</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

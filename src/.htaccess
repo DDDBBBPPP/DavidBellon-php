@@ -1,0 +1,31 @@
+RewriteEngine On
+
+# Auth
+RewriteRule ^login$ index.php?modelo=auth&metodo=index [QSA,L]
+RewriteRule ^registro$ index.php?modelo=auth&metodo=registro [QSA,L]
+RewriteRule ^logout$ index.php?modelo=auth&metodo=logout [QSA,L]
+
+# Inicios
+RewriteRule ^admin$ index.php?modelo=admin&metodo=inicio [QSA,L]
+RewriteRule ^cliente$ index.php?modelo=cliente&metodo=inicio [QSA,L]
+
+# Cliente - Habitaciones
+RewriteRule ^cliente/habitaciones$ index.php?modelo=habitacionCliente&metodo=index [QSA,L]
+
+# Cliente - Reservas
+RewriteRule ^cliente/reservas$ index.php?modelo=reservaCliente&metodo=index [QSA,L]
+RewriteRule ^cliente/reserva/nueva$ index.php?modelo=reservaCliente&metodo=crear [QSA,L]
+RewriteRule ^cliente/reserva/cancelar$ index.php?modelo=reservaCliente&metodo=cancelar [QSA,L]
+
+# Admin - Reservas
+RewriteRule ^admin/reservas$ index.php?modelo=reservaAdmin&metodo=index [QSA,L]
+RewriteRule ^admin/reserva/aceptar$ index.php?modelo=reservaAdmin&metodo=aceptar [QSA,L]
+RewriteRule ^admin/reserva/cancelar$ index.php?modelo=reservaAdmin&metodo=cancelar [QSA,L]
+RewriteRule ^admin/reserva/finalizar$ index.php?modelo=reservaAdmin&metodo=finalizar [QSA,L]
+
+# Admin - Habitaciones
+RewriteRule ^admin/habitaciones$ index.php?modelo=habitacionAdmin&metodo=index [QSA,L]
+RewriteRule ^admin/habitacion/nueva$ index.php?modelo=habitacionAdmin&metodo=crear [QSA,L]
+
+# Admin - Clientes
+RewriteRule ^admin/clientes$ index.php?modelo=adminCliente&metodo=index [QSA,L]

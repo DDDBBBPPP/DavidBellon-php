@@ -1,0 +1,41 @@
+{% extends "plantillas/plantilla_dentro.twig" %}
+
+{% block contenido %}
+    <h2 class="mb-4">Habitaciones disponibles</h2>
+
+    <div class="alert alert-info">
+        Las reservas se realizan <strong>a partir de mañana</strong>.
+        La fecha de entrada será automática.
+    </div>
+
+    {% if habitaciones is empty %}
+        <div class="alert alert-warning">
+            No hay habitaciones disponibles en este momento.
+        </div>
+    {% else %}
+        <div class="row">
+            {% for h in habitaciones %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Habitación {{ h.numero }} ({{ h.tipo|capitalize }})
+                            </h5>
+
+                            <p class="card-text">
+                                Piso: {{ h.piso }}<br>
+                                Capacidad: {{ h.capacidad }} personas<br>
+                                Precio: <strong>{{ h.precio }} € / noche</strong>
+                            </p>
+
+                            <a href="{{ ruta('cliente.reserva.nueva') }}?habitacion={{ h.id_habitacion }}"
+                               class="btn btn-primary w-100 mt-2">
+                                Reservar esta habitación
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

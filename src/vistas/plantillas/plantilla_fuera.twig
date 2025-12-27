@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BookTech · Gestor Hotelero{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+</head>
+<body class="bg-light">
+
+<div class="container">
+
+    <!-- CABECERA COMÚN -->
+    <div class="text-center mt-5 mb-4">
+        <h1 class="fw-bold">🏨 BookTech</h1>
+        <p class="text-muted">
+            Plataforma de gestión y reservas hoteleras
+        </p>
+    </div>
+
+    <!-- CONTENIDO -->
+    {% block content %}{% endblock %}
+
+    <!-- FOOTER -->
+    <footer class="text-center text-muted mt-5 mb-3 small">
+        &copy; {{ "now"|date("Y") }} · BookTech · Aplicacion PHP
+    </footer>
+
+</div>
+
+</body>
+</html>

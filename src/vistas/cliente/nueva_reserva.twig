@@ -1,0 +1,35 @@
+{% extends "plantillas/plantilla_dentro.twig" %}
+
+{% block contenido %}
+    <h2 class="mb-4">Solicitar reserva</h2>
+
+    <div class="alert alert-info">
+        La fecha de entrada será <strong>{{ fecha_entrada }}</strong> (mañana).
+    </div>
+
+    {% if errores is defined and errores %}
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                {% for e in errores %}
+                    <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Fecha de salida</label>
+            <input type="date"
+                   name="fecha_salida"
+                   class="form-control"
+                   required
+                   value="{{ fecha_salida ?? '' }}">
+        </div>
+
+        <button class="btn btn-success">
+            Solicitar reserva
+        </button>
+    </form>
+{% endblock %}

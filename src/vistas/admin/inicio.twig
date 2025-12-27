@@ -1,0 +1,26 @@
+{% extends "plantillas/plantilla_dentro.twig" %}
+
+{% block title %}Panel de administración{% endblock %}
+
+{% block content %}
+    <div class="card shadow">
+        <div class="card-body">
+            <h2>Panel de administración</h2>
+
+            <p class="mt-2">
+                Bienvenido, {{ usuario.nombre }}
+                <small class="text-muted">
+                    (nivel {{ usuario.nivelAcceso ?? 'básico' }})
+                </small>
+            </p>
+
+            <ul class="mt-3">
+                <li>Ver todas las reservas y aceptarlas</li>
+                <li>Finalizar o cancelar reservas (Solo Super).</li>
+                <li>Gestionar clientes</li>
+                <li>Aprobar o rechazar solicitudes</li>
+                <li>Crear habitaciones</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
