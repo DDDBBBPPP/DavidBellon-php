@@ -1,11 +1,33 @@
 FROM php:8.2-apache
 
-RUN apt-get update
-RUN apt-get install -y zip unzip
+# Paquetes útiles: zip/unzip (composer) + mysql client (para importar hotel.sql en Railway si hace falta)
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends zip unzip default-mysql-client \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-enable pdo_mysql
+# PDO MySQL
+RUN docker-php-ext-install pdo_mysql \
+  && docker-php-ext-enable pdo_mysql
 
-RUN a2enmod rewrite
+# Reescritura y .htaccess
+RUN a2enmod rewrite \
+  && sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+# Copiamos código (en local docker-compose lo montará por volumen igualmente, así que no rompe)
+COPY src/ /var/www/html/
+
+# Dependencias PHP (Twig)
+RUN composer install --no-dev --optimize-autoloader || composer install --optimize-autoloader
+
+# SQL de seed + entrypoint
+COPY docker/init/hotel.sql /app/hotel.sql
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["apache2-foreground"]

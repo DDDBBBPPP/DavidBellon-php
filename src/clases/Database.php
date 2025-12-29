@@ -4,28 +4,30 @@ namespace Clases;
 
 final class Database
 {
-    private const DBHOST = "db";
-    private const DBUSER = "user";
-    private const DBPASS = "password";
-    private const DBNAME = "gestor_hotelero";
+    // Defaults = entorno Docker local (docker-compose)
+    private const DEFAULT_HOST = "db";
+    private const DEFAULT_PORT = "3306";
+    private const DEFAULT_USER = "user";
+    private const DEFAULT_PASS = "password";
+    private const DEFAULT_NAME = "gestor_hotelero";
 
     private function __clone() {}
     private function __construct() {}
 
-    /**
-     * @return \PDO|null
-     */
     public static function conectar(): ?\PDO
     {
         try {
-            $dsn = "mysql:host=" . self::DBHOST .
-                ";dbname=" . self::DBNAME .
-                ";charset=utf8";
+            // Railway: usa variables de entorno. Local: cae a defaults.
+            $host = getenv('DB_HOST') ?: self::DEFAULT_HOST;
+            $port = getenv('DB_PORT') ?: self::DEFAULT_PORT;
+            $user = getenv('DB_USER') ?: self::DEFAULT_USER;
+            $pass = getenv('DB_PASS') ?: self::DEFAULT_PASS;
+            $name = getenv('DB_NAME') ?: self::DEFAULT_NAME;
 
-            return new \PDO($dsn, self::DBUSER, self::DBPASS);
+            $dsn = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
 
+            return new \PDO($dsn, $user, $pass);
         } catch (\PDOException $e) {
-            // No exponemos detalles al usuario
             die("Error al conectar con la base de datos.");
         }
     }
