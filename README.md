@@ -60,7 +60,7 @@ gestionar sola.
 
 Aquí tienes enlaces útiles:
 
-- Despliegue con Railway: davidbellon-php-production.up.railway.app
+- Despliegue con Railway: https://davidbellon-php-production.up.railway.app
 - Drive: https://drive.google.com/drive/folders/1enD5_G6wgNkEmlZL0Ln-NDmclhRh8E8t?usp=drive_link
 
 En el drive encontrarás un tutorial en vídeo y el modelo entidad-relación de la base de datos.
