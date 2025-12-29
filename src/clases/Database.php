@@ -17,7 +17,6 @@ final class Database
     public static function conectar(): ?\PDO
     {
         try {
-            // Railway: usa variables de entorno. Local: cae a defaults.
             $host = getenv('DB_HOST') ?: self::DEFAULT_HOST;
             $port = getenv('DB_PORT') ?: self::DEFAULT_PORT;
             $user = getenv('DB_USER') ?: self::DEFAULT_USER;
@@ -25,7 +24,6 @@ final class Database
             $name = getenv('DB_NAME') ?: self::DEFAULT_NAME;
 
             $dsn = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
-
             return new \PDO($dsn, $user, $pass);
         } catch (\PDOException $e) {
             die("Error al conectar con la base de datos.");
