@@ -1,17 +1,12 @@
 #!/bin/sh
 set -e
 
-# Railway recomienda escuchar en $PORT. En local suele ser 80.
-PORT_TO_USE="${PORT:-80}"
+# NO tocamos puertos: Apache se queda escuchando en 80 (comportamiento normal de php:8.2-apache)
 
-if [ "$PORT_TO_USE" != "80" ]; then
-  sed -i "s/Listen 80/Listen ${PORT_TO_USE}/" /etc/apache2/ports.conf
-  sed -i "s/<VirtualHost \*:80>/<VirtualHost \*:${PORT_TO_USE}>/" /etc/apache2/sites-available/000-default.conf
-fi
-
-# Seed idempotente: si hay variables de BD y no existe la tabla `usuario`, importamos hotel.sql
+# Seed idempotente de la BD (si hay variables y existe el SQL)
 if [ -n "$DB_HOST" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASS" ] && [ -n "$DB_NAME" ] && [ -f /app/hotel.sql ]; then
-  echo "[entrypoint] Checking MySQL availability..."
+  echo "[entrypoint] Waiting for MySQL..."
+
   i=0
   until mysqladmin ping -h"$DB_HOST" -P"${DB_PORT:-3306}" -u"$DB_USER" -p"$DB_PASS" --silent; do
     i=$((i+1))
@@ -22,11 +17,19 @@ if [ -n "$DB_HOST" ] && [ -n "$DB_USER" ] && [ -n "$DB_PASS" ] && [ -n "$DB_NAME
     sleep 2
   done
 
-  if mysql -h"$DB_HOST" -P"${DB_PORT:-3306}" -u"$DB_USER" -p"$DB_PASS" -N -e "SELECT 1 FROM information_schema.tables WHERE table_schema='${DB_NAME}' AND table_name='usuario' LIMIT 1;" | grep -q 1; then
-    echo "[entrypoint] DB already initialized, skipping seed."
-  else
-    echo "[entrypoint] Seeding database from /app/hotel.sql ..."
-    mysql -h"$DB_HOST" -P"${DB_PORT:-3306}" -u"$DB_USER" -p"$DB_PASS" < /app/hotel.sql || true
+  # Si MySQL está arriba, comprobamos si ya existe la tabla usuario
+  if mysqladmin ping -h"$DB_HOST" -P"${DB_PORT:-3306}" -u"$DB_USER" -p"$DB_PASS" --silent; then
+    set +e
+    HAS_TABLE=$(mysql -h"$DB_HOST" -P"${DB_PORT:-3306}" -u"$DB_USER" -p"$DB_PASS" -N \
+      -e "SELECT 1 FROM information_schema.tables WHERE table_schema='${DB_NAME}' AND table_name='usuario' LIMIT 1;" 2>/dev/null)
+    set -e
+
+    if [ "$HAS_TABLE" = "1" ]; then
+      echo "[entrypoint] DB already initialized, skipping seed."
+    else
+      echo "[entrypoint] Seeding database from /app/hotel.sql ..."
+      mysql -h"$DB_HOST" -P"${DB_PORT:-3306}" -u"$DB_USER" -p"$DB_PASS" < /app/hotel.sql || true
+    fi
   fi
 fi
 
