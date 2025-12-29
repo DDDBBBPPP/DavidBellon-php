@@ -60,13 +60,14 @@ gestionar sola.
 
 Aquí tienes enlaces útiles:
 
-- Despliegue:
+- Despliegue con Railway: davidbellon-php-production.up.railway.app
 - Drive: https://drive.google.com/drive/folders/1enD5_G6wgNkEmlZL0Ln-NDmclhRh8E8t?usp=drive_link
 
 En el drive encontrarás un tutorial en vídeo y el modelo entidad-relación de la base de datos.
+Según tengo entendido, Railway tiene un tiempo de inactividad si no se usa la app en un tiempo,
+así que puede que la primera vez que entres tarde un poco en cargar. Pero funciona perfectamente.
 
-
-Si la URL de despliegue no funciona, aquí te dejo de manera sencilla 
+Si por lo que sea sigue fallando, aquí te dejo de manera sencilla 
 cómo hacerlo en local.
 
 Cómo desplegar con Docker
